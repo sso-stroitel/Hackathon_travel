@@ -1,112 +1,71 @@
-import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, { Component } from "react";
+import { Container, Content, Icon, Accordion, Text, View} from "native-base";
+import { Header } from 'react-native-elements';
+import { YellowBox, StyleSheet } from 'react-native'
 
-import { MonoText } from '../components/StyledText';
+YellowBox.ignoreWarnings([
+  'VirtualizedLists should never be nested', // TODO: Remove when fixed
+])
+const dataArray = [
+  { title: "Первый день", content: "Lorem ipsum dolor sit amet" },
+  { title: "Второй день", content: "Lorem ipsum dolor sit amet" },
+  { title: "Третий день", content: "Lorem ipsum dolor sit amet" }
+];
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-          />
-        </View>
-
-        <View style={styles.getStartedContainer}>
-          <DevelopmentModeNotice />
-
-          <Text style={styles.getStartedText}>Get started by opening</Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-            <MonoText>screens/HomeScreen.js</MonoText>
-          </View>
-
-          <Text style={styles.getStartedText}>
-            Change this text and your app will automatically reload.
+export default class HomeScreen extends Component {
+  _renderHeader(item, expanded) {
+    return (
+        <View style={{
+          flexDirection: "row",
+          padding: 10,
+          justifyContent: "space-between",
+          alignItems: "center" ,
+          backgroundColor: "#A9DAD6" }}>
+          <Text style={{ fontWeight: "600" }}>
+            {" "}{item.title}
           </Text>
+          {expanded
+              ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
+              : <Icon style={{ fontSize: 18 }} name="add-circle" />}
         </View>
-
-        <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>
-              Help, it didn’t automatically reload!
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
+    );
+  }
+  _renderContent(item) {
+    return (
+        <Text
+            style={{
+              backgroundColor: "#e3f1f1",
+              padding: 10,
+              fontStyle: "italic",
+            }}
+        >
+          {item.content}
         </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-          <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText>
-        </View>
-      </View>
-    </View>
-  );
-}
-
-HomeScreen.navigationOptions = {
-  header: null,
-};
-
-function DevelopmentModeNotice() {
-  if (__DEV__) {
-    const learnMoreButton = (
-      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-        Learn more
-      </Text>
     );
-
+  }
+  render() {
     return (
-      <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use
-        useful development tools. {learnMoreButton}
-      </Text>
-    );
-  } else {
-    return (
-      <Text style={styles.developmentModeText}>
-        You are not in development mode: your app will run at full speed.
-      </Text>
+        <Container>
+            <Header
+                centerComponent={{ text: 'Главная', style: { color: '#fff', fontSize: 22, fontWeight: 'bold' } }}
+            />
+          <Content style={{ backgroundColor: "white", paddingTop: 10 }}>
+            <Accordion
+                dataArray={dataArray}
+                animation={true}
+                expanded={true}
+                renderHeader={this._renderHeader}
+                renderContent={this._renderContent}
+            />
+          </Content>
+        </Container>
     );
   }
 }
 
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/development-mode/'
-  );
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
-  );
-}
+HomeScreen.navigationOptions = {
+    header: null,
+};
 
 const styles = StyleSheet.create({
   container: {
