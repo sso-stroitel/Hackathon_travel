@@ -6,27 +6,33 @@ import { YellowBox, StyleSheet } from 'react-native'
 YellowBox.ignoreWarnings([
   'VirtualizedLists should never be nested', // TODO: Remove when fixed
 ])
+
+
 const dataArray = [
-  { title: "Первый день", content: "Lorem ipsum dolor sit amet" },
-  { title: "Второй день", content: "Lorem ipsum dolor sit amet" },
-  { title: "Третий день", content: "Lorem ipsum dolor sit amet" }
+  { title: "Первый день", content: "Lorem ipsum dolor sit amet", date: new Date(2020, 2, 7) },
+  { title: "Второй день", content: "Lorem ipsum dolor sit amet", date: new Date(2020, 2, 8) },
+  { title: "Третий день", content: "Lorem ipsum dolor sit amet", date: new Date(2020, 2, 9) },
+  { title: "Четвертый день", content: "Lorem ipsum dolor sit amet", date: new Date(2020, 2, 10) },
+  { title: "Пятый день", content: "Lorem ipsum dolor sit amet", date: new Date(2020, 2, 11) }
 ];
 
 export default class HomeScreen extends Component {
   _renderHeader(item, expanded) {
+    const { date } = item;
+    const isCompleted = new Date().getDate() > date.getDate();
     return (
         <View style={{
           flexDirection: "row",
           padding: 10,
           justifyContent: "space-between",
           alignItems: "center" ,
-          backgroundColor: "#A9DAD6" }}>
+          backgroundColor: "#b7daf8" }}>
           <Text style={{ fontWeight: "600" }}>
             {" "}{item.title}
           </Text>
-          {expanded
-              ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-              : <Icon style={{ fontSize: 18 }} name="add-circle" />}
+          {isCompleted
+              ? <Icon style={{ fontSize: 18 }} name="checkmark-circle-outline" />
+              : <Icon style={{ fontSize: 18 }} name="time" />}
         </View>
     );
   }
@@ -44,6 +50,8 @@ export default class HomeScreen extends Component {
     );
   }
   render() {
+    const getIdxOfExpandedEl = dataArray.filter(el => el.date.getDate() === new Date().getDate())[0];
+    const getIdx = dataArray.indexOf(getIdxOfExpandedEl);
     return (
         <Container>
             <Header
@@ -53,7 +61,7 @@ export default class HomeScreen extends Component {
             <Accordion
                 dataArray={dataArray}
                 animation={true}
-                expanded={true}
+                expanded={getIdx}
                 renderHeader={this._renderHeader}
                 renderContent={this._renderContent}
             />
@@ -71,87 +79,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+  }
 });
