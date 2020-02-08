@@ -6,7 +6,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import { TabBarIconAnt, TabBarIconIonic } from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import ChatScreen from '../screens/ChatScreen';
 import AccountScreen from "../screens/AccountScreen";
 
 const config = Platform.select({
@@ -55,7 +55,7 @@ LinksStack.path = '';
 
 const SettingsStack = createStackNavigator(
     {
-        Settings: SettingsScreen,
+        Settings: ChatScreen,
     },
     config
 );
