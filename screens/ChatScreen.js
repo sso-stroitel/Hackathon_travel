@@ -17,7 +17,7 @@ class ChatScreen extends React.Component {
             messages: [
                 {
                     _id: 1,
-                    text: 'Йоу йоу мазафака',
+                    text: 'Привет :) Добро пожаловать в чат',
                     createdAt: new Date(),
                     user: {
                         _id: 2,
@@ -58,7 +58,7 @@ class ChatScreen extends React.Component {
             renderSend={text => this.renderSend(text)}
             placeholder='Написать...'
         />
-            {Platform.OS === 'android' ? <KeyboardSpacer/> : null}
+            {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={30}/> : null}
         </View>;
     }
 }

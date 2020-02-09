@@ -1,127 +1,85 @@
-import { Field, Formik } from "formik";
-import React, { Component } from "react";
-import { Alert, Keyboard, StyleSheet, View } from "react-native";
-import { Button, Input, Text } from "react-native-elements";
+import {Field, Formik} from "formik";
+import React, {Component} from "react";
+import {StyleSheet, View, TextInput, Image} from "react-native";
+import {Button, Input} from "react-native-elements";
 import * as Yup from "yup";
 import AuthPageWrapper from "./AuthPageWrapper";
 
 class LogInScreen extends Component {
-  navigationOptions = {
-    header: null
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: ""
+    navigationOptions = {
+        header: null
     };
-  }
 
-  onSubmit = (values, actions) => {
-    const { email, password } = values;
-    console.log("trying to login with creds: ", email, password);
-    this.props.navigation.navigate("App");
-  };
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: "",
+            password: ""
+        };
+    }
 
-  render() {
-    return (
-      <AuthPageWrapper>
+    onSubmit = (values, actions) => {
+        const {email, password} = values;
+        this.props.navigation.navigate("App");
+    };
 
-        <Formik
-          validationSchema={LoginValidationSchema}
-          initialValues={{ email: "", password: "" }}
-          onSubmit={this.onSubmit}
-        >
-          {({
-            handleChange,
-            handleSubmit,
-            handleBlur,
-            values,
-            isValid,
-            touched
-          }) => (
-            <View>
-              <Field name="email">
-                {({ field }) => (
-                  <Input
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    placeholder="Email"
-                    textContentType="emailAddress"
-                    leftIcon={{ name: "email" }}
-                    inputContainerStyle={styles.inputContainer}
-                    value={values.email}
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
-                  />
-                )}
-              </Field>
+    render() {
+        return (
+            <AuthPageWrapper>
 
-              <Field name="password">
-                {({ field }) => (
-                  <Input
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    textContentType="password"
-                    placeholder="Пароль"
-                    leftIcon={{ name: "vpn-key" }}
-                    inputContainerStyle={styles.inputContainer}
-                    value={values.password}
-                    onChangeText={handleChange("password")}
-                    onBlur={handleBlur("password")}
-                  />
-                )}
-              </Field>
+                <Image source={require('../assets/images/login.jpg')} style={styles.image}/>
+                <View>
+                    <TextInput
+                        placeholder='Email'
+                        style={styles.inputFields}
+                        editable
+                    />
 
-              <Button
-                disabled={touched.email && touched.password && !isValid}
-                title="Войти"
-                onPress={(e) => {
-                  isValid ? handleSubmit(e) : null;
-                }}
-                style={{ marginTop: 18 }}
-              />
-            </View>
-          )}
-        </Formik>
-        {/*<Button*/}
-        {/*  type="clear"*/}
-        {/*  title="Че кого в натуре"*/}
-        {/*  style={{ marginTop: 18 }}*/}
-        {/*  titleStyle={{ fontSize: 16 }}*/}
-        {/*/>*/}
-        {/* <Button
-              title="logout"
-              type="clear"
-              onPress={() =>
-                firebase
-                  .auth()
-                  .signOut()
-                  .then(() => console.log("logoutsuccess"))
-              }
-              style={{ alignSelf: "center", marginTop: 20 }}
-            /> */}
-      </AuthPageWrapper>
-    );
-  }
+                    <TextInput
+                        placeholder='Пароль'
+                        style={styles.inputFields}
+                        editable
+                    />
+
+                    <Button
+                        type='outline'
+                        title="Войти"
+                        onPress={this.onSubmit}
+                        style={{marginTop: 18}}
+                    />
+                </View>
+            </AuthPageWrapper>
+        );
+    }
 }
 
 export default LogInScreen;
 
 const styles = StyleSheet.create({
-  formContainer: {
-    flex: 4,
-    alignContent: "center"
-  },
-  inputContainer: {
-    marginBottom: 15
-  }
+    formContainer: {
+        flex: 4,
+        alignContent: "center"
+    },
+    inputContainer: {
+        marginBottom: 15
+    },
+    image: {
+        marginBottom: 40,
+        marginLeft: 15
+    },
+    inputFields: {
+        height: 40,
+        backgroundColor: '#F8F8FC',
+        color: '#C4C4C4',
+        paddingLeft: 10,
+        borderRadius: 5,
+        fontSize: 16,
+        marginBottom: 10
+    }
 });
 const LoginValidationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email()
-    .required("Required"),
-  password: Yup.string().required("Required")
+    email: Yup.string()
+        .email()
+        .required("Required"),
+    password: Yup.string().required("Required")
 });

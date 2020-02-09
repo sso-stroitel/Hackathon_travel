@@ -16,6 +16,6 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 3,
       flexDirection: 'column',
-    justifyContent: "center"
+        justifyContent: "center"
   }
 });
